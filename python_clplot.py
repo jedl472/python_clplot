@@ -1,13 +1,5 @@
-class Point:
-    def __init__(self, x, y, char="#"):
-        self.pos = [x, y]
-        self.char = char
-
-class Rect:
-    def __init__(self, ax, ay, bx, by, char="#"):
-        self.posa = [ax, ay]
-        self.posb = [bx, by]
-        self.char = char
+from shapes import *
+from utils import *
 
 class Canvas:
     def __init__(self, sizex = 10, sizey = 10):
@@ -21,13 +13,8 @@ class Canvas:
         for i in range(self.sizey): canvas_to_print.append(([filler_char[0]] * self.sizex).copy())
 
         for i in self.content: #zapsání obsahu self.content do canvas_to_print
-            if isinstance(i, Point):
-                canvas_to_print[i.pos[1]][i.pos[0]] = i.char
-            
-            elif isinstance(i, Rect):
-                for y in range(i.posa[1], i.posb[1]):   
-                    for x in range(i.posa[0], i.posb[0]):   
-                        canvas_to_print[y][x] = i.char
+            canvas_to_print = i.render(canvas_to_print)
+                
 
 
         for y in range(self.sizey): #vytištění do konzole (přehodí osu y tak, aby byl origin vlevo dole)
@@ -74,3 +61,7 @@ class bar_graph(Canvas):
             labels_to_print += str(i[:self.bar_width]) + (self.bar_width - len(str(i[:self.bar_width]))) * " " + " "
 
         print(labels_to_print)
+    
+
+if __name__ == "__main__":
+    print("Running library not test!")
