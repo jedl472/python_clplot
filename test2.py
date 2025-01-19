@@ -1,4 +1,4 @@
-from python_clplot import *
+from src.python_clplot import *
 
 test2 = Canvas(20, 20)
 
