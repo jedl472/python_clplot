@@ -29,7 +29,7 @@ class Canvas:
     #        print(row_to_print)
 
     def draw(self, label_rangey=-1, filler_char=". "):
-        for y in range(self.sizey, 0, -1):
+        for y in range(self.sizey-1, -1, -1):
             row_to_print = ""
             for x in range(self.sizex):
                 pixel_buffer = []
