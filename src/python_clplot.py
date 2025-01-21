@@ -87,8 +87,8 @@ class bar_graph(Canvas):
 
 class pie_graph(Canvas):
     def __init__(self, graph_diameter=10):
-        self.sizex = graph_diameter+10
-        self.sizey = graph_diameter+10
+        self.sizex = graph_diameter+20
+        self.sizey = graph_diameter+20
 
         self.graph_diameter = graph_diameter
 
@@ -106,11 +106,13 @@ class pie_graph(Canvas):
 
         mapped_values.append(360)
 
+
+        generator_angle = 0
         for i in enumerate(mapped_values[:-1]):
-            print(len(mapped_values), i[0])
-            self.content.append(Center_point_circle(round(self.sizex/2), round(self.sizey/2), self.graph_diameter, mapped_values[i[0]], mapped_values[i[0]+1]))
-
-
+            self.content.append(Center_point_circle(round(self.sizex/2), round(self.sizey/2), self.graph_diameter, generator_angle, generator_angle+i[1], char=self.graphLabels[i[0]]))
+            generator_angle += i[1]
+        print(mapped_values)
+        self.draw()
 
 
 
