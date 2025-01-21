@@ -38,25 +38,22 @@ class Rect:
     
 
 class Center_point_circle:
-    def __init__(self, x, y, size, char="#"):
+    def __init__(self, x, y, size, anglea=0, angleb=360, char="#", ):
         self.pos = [x, y]
         self.size = size
         self.char = char
 
-    def render(self, canvas):
-        output_canvas = canvas.copy()
-        for y in range(len(output_canvas)):
-            for x in range(len(output_canvas[y])):
-                if round(distance(self.pos, [x, y])) <= self.size: output_canvas[x][y] = self.char
-        return canvas
+        self.anglea = anglea
+        self.angleb = angleb
 
     def isInShape(self, point):
-        if round(distance(self.pos, point)) <= self.size: 
-            return True
-        else:
-            return False
+        if round(distance(self.pos, point)) <= self.size:
+            if self.anglea <= angle_from_origin(point, self.pos) <= self.angleb:
+                return True
+        return False
         
     def isInBoundingBox(self, point):
         if point[0] >= self.pos[0] - self.size and point[0] <= self.pos[0] + self.size:
             if point[1] >= self.pos[1] - self.size and point[1] <= self.pos[1] + self.size:
                 return True
+        return False

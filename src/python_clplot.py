@@ -31,6 +31,11 @@ class Canvas:
     def draw(self, label_rangey=-1, filler_char=". "):
         for y in range(self.sizey-1, -1, -1):
             row_to_print = ""
+
+            if label_rangey != -1:  # vertikalni labely se tisknou, pokud se label_rangey != -1, defaultně vypnuto
+                row_label_value = str(round((label_rangey+1)-((label_rangey+1)*((self.sizey - y)/self.sizey)))-1)
+                row_to_print = (row_label_value + " " * (len(str(label_rangey)) - len(row_label_value)) + "| ")
+
             for x in range(self.sizex):
                 pixel_buffer = []
 
@@ -79,7 +84,37 @@ class bar_graph(Canvas):
             labels_to_print += str(i[:self.bar_width]) + (self.bar_width - len(str(i[:self.bar_width]))) * " " + " "
 
         print(labels_to_print)
-    
+
+class pie_graph(Canvas):
+    def __init__(self, graph_diameter=10):
+        self.sizex = graph_diameter+10
+        self.sizey = graph_diameter+10
+
+        self.graph_diameter = graph_diameter
+
+        self.content = []
+
+        self.graphValues = []
+        self.graphLabels = []
+
+    def draw_graph(self):
+        mapped_values = []
+        graph_sum = sum(self.graphValues)
+
+        for i in enumerate(self.graphValues):
+            mapped_values.append((360/graph_sum)*i[1])
+
+        mapped_values.append(360)
+
+        for i in enumerate(mapped_values[:-1]):
+            print(len(mapped_values), i[0])
+            self.content.append(Center_point_circle(round(self.sizex/2), round(self.sizey/2), self.graph_diameter, mapped_values[i[0]], mapped_values[i[0]+1]))
+
+
+
+
+
+
 
 if __name__ == "__main__":
     print("Running library not test!")
