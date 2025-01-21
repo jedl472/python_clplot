@@ -7,26 +7,6 @@ class Canvas:
         self.sizey = sizey
 
         self.content = []
-    
-    #def draw(self, label_rangey=-1, filler_char=". "): #TODO optimalizovat aby se nemusel vytvářet list o velikosti canvas
-    #    canvas_to_print = []
-    #    for i in range(self.sizey): canvas_to_print.append(([filler_char[0]] * self.sizex).copy())
-#
-    #    for i in self.content: #zapsání obsahu self.content do canvas_to_print
-    #        canvas_to_print = i.render(canvas_to_print)
-    #            
-#
-#
-    #    for y in range(self.sizey): #vytištění do konzole (přehodí osu y tak, aby byl origin vlevo dole)
-    #        row_to_print = ""
-#
-    #        if label_rangey != -1:  # vertikalni labely se tisknou, pokud se label_rangey != -1, defaultně vypnuto
-    #            row_label_value = str(round((label_rangey+1)-((label_rangey+1)*(y/self.sizey)))-1)
-    #            row_to_print = (row_label_value + " " * (len(str(label_rangey)) - len(row_label_value)) + "| ")
-#
-    #        for x in range(self.sizex):
-    #            row_to_print += canvas_to_print[self.sizey-y-1][x] + filler_char[1:]
-    #        print(row_to_print)
 
     def draw(self, label_rangey=-1, filler_char=". "):
         for y in range(self.sizey-1, -1, -1):
@@ -40,16 +20,33 @@ class Canvas:
                 pixel_buffer = []
 
                 for i in self.content:
-                    if i.isInBoundingBox([x, y]):
-                        if i.isInShape([x, y]):
-                            pixel_buffer.append(i.char)
+                    if i.visibility == 1:
+                        if i.isInBoundingBox([x, y]):
+                            if i.isInShape([x, y]):
+                                pixel_buffer.append(i)
                 
                 if len(pixel_buffer) > 0:
-                    row_to_print += pixel_buffer[0] + filler_char[1:]
+                    top_layer_shape = max(pixel_buffer, key=lambda obj: obj.layer)
+                    row_to_print += top_layer_shape.char + filler_char[1:]
                 else:
                     row_to_print += filler_char
             
             print(row_to_print)
+        
+    def content_with_id(self, id):
+        for i in self.content:
+            if id == i.id:
+                return i
+    
+    def add_content(self, content):
+        if len(self.content) == 0:
+            content.id = 0
+        else:
+            content.id = self.content.copy().pop().id + 1
+        
+        self.content.append(content)
+
+        
 
 class bar_graph(Canvas):
     def __init__(self, bar_width=2, max_bar_height=10):

@@ -4,8 +4,16 @@ from .utils import *
 # Program neprve zkontroluje, jestli je bod v bounding boxu isInBoundingBox, a pak az pocita samotnou funkci isInShape (hlavne u kruhu, odmocnina je náročná)
 #
 
-class Point:
+class Shape:
+    def __init__(self):
+        self.layer = 0
+        self.visibility = 1
+        id = -1
+
+class Point(Shape):
     def __init__(self, x, y, char="#"):
+        super().__init__()
+
         self.pos = [x, y]
         self.char = char
     
@@ -17,8 +25,10 @@ class Point:
         return True
 
 
-class Rect:
+class Rect(Shape):
     def __init__(self, ax, ay, bx, by, char="#"):
+        super().__init__()
+
         self.posa = [ax, ay]
         self.posb = [bx, by]
         self.char = char
@@ -37,8 +47,10 @@ class Rect:
         return True
     
 
-class Center_point_circle:
-    def __init__(self, x, y, size, anglea=0, angleb=360, char="#", ):
+class Center_point_circle(Shape):
+    def __init__(self, x, y, size, anglea=0, angleb=360, char="#"):
+        super().__init__()
+
         self.pos = [x, y]
         self.size = size
         self.char = char

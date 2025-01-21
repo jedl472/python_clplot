@@ -1,12 +1,15 @@
 from src.python_clplot import *
 
-print("--------------- test2 -------------")
+test2 = Canvas(20, 20)
 
-test2 = Canvas(40, 40)
+test2.add_content(Rect(1, 2, 7, 11, char="*"))
+test2.add_content(Center_point_circle(9, 9, 5))
 
-test2.content.append(Center_point_circle(19, 19, 13, 45, 80))
-test2.content.append(Center_point_circle(19, 19, 10))
-#test2.content.append(Rect(1, 2, 7, 11, char="*"))
+print(test2.content)
+print(test2.content[0].id)
+print(test2.content[1].id)
+
+test2.content_with_id(0).visibility = 0
 
 
 test2.draw()
