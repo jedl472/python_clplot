@@ -1,7 +1,7 @@
 from .utils import *
 
 #
-# Program neprve zkontroluje, jestli je bod v bounding boxu isInBoundingBox, a pak az pocita samotnou funkci isInShape (hlavne u kruhu, odmocnina je náročná)
+# Program neprve zkontroluje, jestli je bod v bounding boxu isInBoundingBox, a pak az pocita samotnou funkci isInShape (hlavne u kruhu, odmocnina je náročná na vykon)
 #
 
 class Shape:
@@ -11,11 +11,13 @@ class Shape:
         id = -1
 
 class Point(Shape):
-    def __init__(self, x, y, char="#"):
+    def __init__(self, x, y, char="#", layer=0):
         super().__init__()
 
         self.pos = [x, y]
         self.char = char
+
+        self.layer = layer
     
     def isInShape(self, point):
         if point == self.pos:
@@ -26,12 +28,14 @@ class Point(Shape):
 
 
 class Rect(Shape):
-    def __init__(self, ax, ay, bx, by, char="#"):
+    def __init__(self, ax, ay, bx, by, char="#", layer=0):
         super().__init__()
 
         self.posa = [ax, ay]
         self.posb = [bx, by]
         self.char = char
+
+        self.layer = layer
     
     def isInShape(self, point):
         if self.posa[0] > self.posb[0]: self.posa[0], self.posb[0] = self.posb[0], self.posa[0] #kontrola, jestli neni prvni pozice vetsi nez druha
@@ -48,7 +52,7 @@ class Rect(Shape):
     
 
 class Center_point_circle(Shape):
-    def __init__(self, x, y, size, anglea=0, angleb=360, char="#"):
+    def __init__(self, x, y, size, anglea=0, angleb=360, char="#", layer=0):
         super().__init__()
 
         self.pos = [x, y]
@@ -57,6 +61,8 @@ class Center_point_circle(Shape):
 
         self.anglea = anglea
         self.angleb = angleb
+
+        self.layer = layer
 
     def isInShape(self, point):
         if round(distance(self.pos, point)) <= self.size:
@@ -70,4 +76,28 @@ class Center_point_circle(Shape):
                 return True
         return False
     
-#class Text(Shape):
+class Text(Shape):
+    def __init__(self, x, y, text, orientation=0, layer=0):
+        super().__init__()
+
+        self.pos = [x, y]
+        self.text = text
+        self.char = " "
+
+        self.layer = layer
+
+        self.orientation = orientation #při hodnote 0 je text horizontalni
+
+    def isInBoundingBox(self, point):
+        return True
+    
+    def isInShape(self, point):
+        if self.orientation == 0:
+            if point == self.pos:
+                return True
+        
+        if self.orientation == 1:
+            if self.pos[0] == point[0] and (self.pos[1]-len(self.text)) < point[1] < self.pos[1]:
+                self.char = self.text[self.pos[1]-point[1]-1]
+                return True
+

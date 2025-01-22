@@ -9,7 +9,10 @@ print(test2.content)
 print(test2.content[0].id)
 print(test2.content[1].id)
 
-test2.content_with_id(0).visibility = 0
+test2.content_with_id(0).visibility = 1
+
+test2.add_content(Text(1, 19, "ahoj jak se mas aaaaaaaa", orientation=0))
+test2.content_with_id(2).layer = 1
 
 
 test2.draw()

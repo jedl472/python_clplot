@@ -13,6 +13,7 @@ class Canvas:
     def draw(self, label_rangey=-1):
         for y in range(self.sizey-1, -1, -1):
             row_to_print = ""
+            text_buffer = []
 
             if label_rangey != -1:  # vertikalni labely se tisknou, pokud se label_rangey != -1, defaultně vypnuto
                 row_label_value = str(round((label_rangey+1)-((label_rangey+1)*((self.sizey - y)/self.sizey)))-1)
@@ -25,9 +26,17 @@ class Canvas:
                     if i.visibility == 1:
                         if i.isInBoundingBox([x, y]):
                             if i.isInShape([x, y]):
-                                pixel_buffer.append(i)
+                                if not isinstance(i, Text) or i.orientation == 1:
+                                    pixel_buffer.append(i)
+                                else:
+                                    text_buffer = i.text
                 
-                if len(pixel_buffer) > 0:
+                if len(text_buffer) > 0: #jako důsledek se text vždy renderuje v popředí TODO: zprovoznit vrstvy u textu
+                    text_to_add = (text_buffer[:(len(self.filler_char))])
+                    if len(text_to_add) != len(self.filler_char): text_to_add += " " * (len(self.filler_char) - len(text_to_add)) #doplní string na požadovanou délku buňky
+                    row_to_print += text_to_add
+                    text_buffer = text_buffer[(len(self.filler_char)):]
+                elif len(pixel_buffer) > 0: #v pixel_buffer jsou věci uložené kvůli vrstvám
                     top_layer_shape = max(pixel_buffer, key=lambda obj: obj.layer)
                     row_to_print += top_layer_shape.char + self.filler_char[1:]
                 else:
@@ -85,19 +94,21 @@ class bar_graph(Canvas):
         print(labels_to_print)
 
 class pie_graph(Canvas):
-    def __init__(self, graph_diameter=10):
+    def __init__(self):
         Canvas.__init__(self)
 
-        self.sizex = graph_diameter+20
-        self.sizey = graph_diameter+20
+        self.sizex = 30
+        self.sizey = 30
 
-        self.graph_diameter = graph_diameter
+        self.graphpos = [15, 15]
+
+        self.graph_diameter = 10
         self.active_part = -1
 
         self.content = []
 
         self.graphValues = []
-        self.graphLabels = []
+        self.graphLabels = ["1", "2", "3", "4", "5"]
 
     def draw_graph(self):
         mapped_values = []
@@ -113,8 +124,8 @@ class pie_graph(Canvas):
         for i in enumerate(mapped_values[:-1]):
             section_diameter = self.graph_diameter
             if i[0] == self.active_part:
-                section_diameter += 2
-            self.content.append(Center_point_circle(round(self.sizex/2), round(self.sizey/2), section_diameter, generator_angle, generator_angle+i[1], char=self.graphLabels[i[0]]))
+                section_diameter += 3
+            self.content.append(Center_point_circle(self.graphpos[0], self.graphpos[1], section_diameter, generator_angle, generator_angle+i[1], char=self.graphLabels[i[0]]))
             generator_angle += i[1]
         #print(mapped_values)
 
