@@ -8,7 +8,9 @@ class Canvas:
 
         self.content = []
 
-    def draw(self, label_rangey=-1, filler_char=". "):
+        self.filler_char = ". "
+
+    def draw(self, label_rangey=-1):
         for y in range(self.sizey-1, -1, -1):
             row_to_print = ""
 
@@ -27,9 +29,9 @@ class Canvas:
                 
                 if len(pixel_buffer) > 0:
                     top_layer_shape = max(pixel_buffer, key=lambda obj: obj.layer)
-                    row_to_print += top_layer_shape.char + filler_char[1:]
+                    row_to_print += top_layer_shape.char + self.filler_char[1:]
                 else:
-                    row_to_print += filler_char
+                    row_to_print += self.filler_char
             
             print(row_to_print)
         
@@ -84,10 +86,13 @@ class bar_graph(Canvas):
 
 class pie_graph(Canvas):
     def __init__(self, graph_diameter=10):
+        Canvas.__init__(self)
+
         self.sizex = graph_diameter+20
         self.sizey = graph_diameter+20
 
         self.graph_diameter = graph_diameter
+        self.active_part = -1
 
         self.content = []
 
@@ -106,10 +111,16 @@ class pie_graph(Canvas):
 
         generator_angle = 0
         for i in enumerate(mapped_values[:-1]):
-            self.content.append(Center_point_circle(round(self.sizex/2), round(self.sizey/2), self.graph_diameter, generator_angle, generator_angle+i[1], char=self.graphLabels[i[0]]))
+            section_diameter = self.graph_diameter
+            if i[0] == self.active_part:
+                section_diameter += 2
+            self.content.append(Center_point_circle(round(self.sizex/2), round(self.sizey/2), section_diameter, generator_angle, generator_angle+i[1], char=self.graphLabels[i[0]]))
             generator_angle += i[1]
-        print(mapped_values)
+        #print(mapped_values)
+
         self.draw()
+
+        self.content = []
 
 
 

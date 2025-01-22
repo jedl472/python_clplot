@@ -69,3 +69,5 @@ class Center_point_circle(Shape):
             if point[1] >= self.pos[1] - self.size and point[1] <= self.pos[1] + self.size:
                 return True
         return False
+    
+#class Text(Shape):
