@@ -13,7 +13,7 @@ graph.active_part = 1
 graph.graphValues = [0, 0, 0, 0, 0]
 graph_meta = [[], [], [], [], []]
 
-df = pd.read_csv("python_clplot/klasifikacni_tabulka.csv") # df - data frame
+df = pd.read_csv("klasifikacni_tabulka.csv") # df - data frame
 
 x_values = df['Prezdivka']
 y_values = df['Znamka']

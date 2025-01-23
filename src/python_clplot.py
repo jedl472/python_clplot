@@ -55,9 +55,7 @@ class Canvas:
         else:
             content.id = self.content.copy().pop().id + 1
         
-        self.content.append(content)
-
-        
+        self.content.append(content)   
 
 class bar_graph(Canvas):
     def __init__(self, bar_width=2, max_bar_height=10):
@@ -65,6 +63,7 @@ class bar_graph(Canvas):
         self.sizey = max_bar_height
 
         self.bar_width = bar_width
+        self.filler_char = " "
 
         self.content = []
 
@@ -73,7 +72,6 @@ class bar_graph(Canvas):
     
     def drawGraph(self):
         max_value = max(self.graphValues)
-        mapped_values = []
 
         for i in enumerate(self.graphValues):
             bar_height = round((i[1]/max_value)*self.sizey)
@@ -83,7 +81,7 @@ class bar_graph(Canvas):
 
         self.sizex = ((self.bar_width+1) * len(self.graphValues))-1
 
-        self.draw(label_rangey=max_value, filler_char=" ")
+        self.draw(label_rangey=max_value)
 
         self.content = []
 
