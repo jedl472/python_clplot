@@ -8,7 +8,7 @@ graph = pie_graph()
 graph.filler_char = "  "
 graph.graphpos = [14, 16]
 graph.graph_diameter = 9
-graph.active_part = 1
+graph.active_part = 0
 
 graph.graphValues = [0, 0, 0, 0, 0]
 graph_meta = [[], [], [], [], []]
@@ -22,12 +22,8 @@ for i in enumerate(y_values):
     graph.graphValues[int(i[1])-1] += 1
     graph_meta[int(i[1])-1].append(x_values[i[0]])
 
-print(graph.graphValues)
-print(graph_meta)
-
 
 graph.sizex = 47
-graph.draw_graph()
 
 def left_arrow(keyboard_event):
     if graph.active_part < len(graph.graphValues)-1:
@@ -55,7 +51,6 @@ def graph_ui():
     ui.append(Rect(30, 1, 45, 29, char="+"))
     ui.append(Rect(31, 2, 44, 28, char=" ", layer=1))
 
-    print(graph.graphLabels[graph.active_part])
     ui.append(Text(33, 26, text="Známka: " + graph.graphLabels[graph.active_part], layer=2))
     ui.append(Text(32, 24, text="---------------------", layer=2))
 
@@ -66,5 +61,7 @@ def graph_ui():
 
 keyboard.on_press_key("Left", left_arrow)
 keyboard.on_press_key("Right", right_arrow)
+
+left_arrow("")
 
 keyboard.wait()

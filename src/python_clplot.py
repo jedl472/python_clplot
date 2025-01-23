@@ -16,7 +16,7 @@ class Canvas:
             text_buffer = []
 
             if label_rangey != -1:  # vertikalni labely se tisknou, pokud se label_rangey != -1, defaultně vypnuto
-                row_label_value = str(round((label_rangey+1)-((label_rangey+1)*((self.sizey - y)/self.sizey)))-1)
+                row_label_value = str(round((label_rangey)-((label_rangey)*((self.sizey - (y+1))/self.sizey))))
                 row_to_print = (row_label_value + " " * (len(str(label_rangey)) - len(row_label_value)) + "| ")
 
             for x in range(self.sizex):
@@ -69,7 +69,9 @@ class bar_graph(Canvas):
 
         self.graphValues = []
         self.graphLabels = []
-    
+
+        self.label_orientation = 0 #0 horizontální, 1 vertikální (TODO)
+
     def drawGraph(self):
         max_value = max(self.graphValues)
 
@@ -85,11 +87,15 @@ class bar_graph(Canvas):
 
         self.content = []
 
-        labels_to_print = " " * (len(str(max_value))+2)
-        for i in self.graphLabels: # ----------------------------------- tisk horizontalnich labelu
-            labels_to_print += str(i[:self.bar_width]) + (self.bar_width - len(str(i[:self.bar_width]))) * " " + " "
+        if self.label_orientation == 0:
+            for k in range(round(len(max(self.graphLabels, key = len))/self.bar_width)):
 
-        print(labels_to_print)
+                labels_to_print = " " * (len(str(max_value))+2)
+
+                for i in self.graphLabels: # ----------------------------------- tisk horizontalnich labelu
+                    labels_to_print += str(i[(k*self.bar_width):][:self.bar_width]) + (self.bar_width - len(str(i[(k*self.bar_width):][:self.bar_width]))) * " " + " "
+
+                print(labels_to_print)
 
 class pie_graph(Canvas):
     def __init__(self):

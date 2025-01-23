@@ -97,7 +97,7 @@ class Text(Shape):
                 return True
         
         if self.orientation == 1:
-            if self.pos[0] == point[0] and (self.pos[1]-len(self.text)) < point[1] < self.pos[1]:
+            if self.pos[0] == point[0] and (self.pos[1]-len(self.text)-1) < point[1] < self.pos[1]:
                 self.char = self.text[self.pos[1]-point[1]-1]
                 return True
 
